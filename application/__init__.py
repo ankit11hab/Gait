@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
@@ -17,6 +17,25 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 bcrypt = Bcrypt(app)
 thumb = Thumbnail(app)
+
+from flask_restful import Api, Resource
+
+
 login_manager.login_view='login'
 login_manager.login_message_category='info'
 from application import routes
+from application.models import Module, Pdf
+api = Api(app)
+class AddPdf(Resource):
+    def post(self):
+        json_data = request.get_json(force=True)
+        module_id = json_data['module_id']
+        url = json_data['url']
+        print(module_id, url)
+        module = Module.query.get(module_id)
+        pdf = Pdf(title="New PDF", pdf="-1", module=module, sharable_link=url)
+        db.session.add(pdf)
+        db.session.commit()
+        return {"data":"fine"}
+
+api.add_resource(AddPdf, '/api/pdf')

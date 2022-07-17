@@ -8,6 +8,7 @@ import secrets, os
 from werkzeug.utils import secure_filename
 import uuid
 
+
 # Registration Page
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -40,6 +41,19 @@ def login():
     return render_template('form.html', legend='Sign In', title = 'Login', type='login', form=form)
 
 
+# API Login
+@app.route("/api/login/<string:username>/<string:password>", methods=['GET', 'POST'])
+def api_login(username, password):
+    user = User.query.filter_by(username=username).first()
+    if user and bcrypt.check_password_hash(user.password, password):
+        return {
+            "id":user.id
+        }
+    return {
+        "id":-1
+    }
+
+
 # Logout Page
 @app.route("/logout")
 def logout():
@@ -52,6 +66,20 @@ def logout():
 @login_required
 def module():
     return render_template('main/modules.html', title = 'Modules')
+
+
+# Modules API
+@app.route("/api/modules/<int:user_id>")
+@login_required
+def api_module(user_id):
+    user = User.query.get(user_id)
+    options = []
+    for module in user.modules:
+        options.append({
+            "module_title": module.title,
+            "module_id": module.id
+        })
+    return {"data": options}
 
 
 # Add New Module
@@ -137,6 +165,17 @@ def new_pdf(module_id):
             db.session.commit()
             return redirect('/module/'+str(module_id))
     return render_template('form.html', title = 'New PDF', legend="Add New PDF", type='crud', form = form)
+
+
+# Add PDF API
+# @app.route("/api/pdf/<int:module_id>/<string:link>", methods=['GET', 'POST'])
+# @login_required
+# def api_new_pdf(module_id, link):
+#     module = Module.query.get(module_id)
+#     pdf = Pdf(title="New PDF", pdf="-1", module=module, sharable_link=link)
+#     db.session.add(pdf)
+#     db.session.commit()
+#     return "Added"
 
 
 # Edit PDF

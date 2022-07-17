@@ -7,15 +7,7 @@
     </div>
     <form method="POST" action="" novalidate  enctype="multipart/form-data">
         {{ form.hidden_tag() }}
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        <div class="alert alert-{{ category }}">
-            {{ message }}
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
+        
         {% for field in form if field.widget.input_type != 'hidden' %}
         {% if field.type != "SubmitField" and field.type!="BooleanField" %}
         <div class="mb-3">

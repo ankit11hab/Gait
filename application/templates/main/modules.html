@@ -25,6 +25,26 @@
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{{ url_for('static', filename='assets/menu.png') }}" width="17px" />
                         </button>
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#shareModuleModal-{{ module.id }}"
+                        style="background-color: white;outline:none;padding: 0;border: none;float:right;transform: translate(0,5px);">
+                        <img src="{{ url_for('static', filename='assets/share.png') }}" width="15px" />
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="shareModuleModal-{{ module.id }}" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Share this link</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body my-4">
+                                    <input type="text" value="{{ module.sharable_link }}" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                         <ul class="dropdown-menu" aria-labelledby="dropdownModuleButton-{{module.id}}">
                             <li><a class="dropdown-item" href="{{ url_for('edit_module', module_id=module.id) }}">Edit</a></li>
                             <li><a class="dropdown-item" href="{{ url_for('delete_module_del', module_id=module.id) }}">Delete</a></li>

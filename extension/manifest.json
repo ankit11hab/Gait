@@ -1,0 +1,35 @@
+{
+    "name": "Gait",
+    "version": "1.0.0",
+    "description": "Manage your modules in the most convenient way.",
+    "manifest_version": 2,
+    "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "content.js"
+            ],
+            "all_frames": false
+        }
+    ],
+    "icons": {
+        "128": "logo.png"
+    },
+    "browser_action": {
+      "default_popup": "index.html"
+    },
+    "permissions": [
+        "http://127.0.0.1:8000/*",
+        "http://127.0.0.1:5000/*",
+        "activeTab",
+        "tabs",
+        "storage"
+    ]
+}
