@@ -103,6 +103,36 @@ const addPdf = async (id, module_id, url) => {
     console.log(response);
 }
 
+const addImage = async (id, module_id, url) => {
+    const response = await fetch(`http://127.0.0.1:5000/api/image`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "module_id": module_id,
+            "url": url
+        }),
+    });
+    console.log(response);
+}
+
+const addVideo = async (id, module_id, url) => {
+    const response = await fetch(`http://127.0.0.1:5000/api/video`, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            "module_id": module_id,
+            "url": url
+        }),
+    });
+    console.log(response);
+}
+
 document.getElementById("add").addEventListener('click', () => {
     const module_id = document.getElementById('select-module').value;
     console.log(module_id);
@@ -116,5 +146,9 @@ document.getElementById("add").addEventListener('click', () => {
         console.log(extension);
         if(extension=='pdf')
             addPdf(id, module_id, url);
+        if(extension=='jpg'||extension=='jpeg'||extension=='png')
+            addImage(id, module_id, url);
+        if(extension=='mp4'||extension=='mov'||extension=='wmv')
+            addVideo(id, module_id, url);
     });
 })

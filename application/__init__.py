@@ -24,7 +24,7 @@ from flask_restful import Api, Resource
 login_manager.login_view='login'
 login_manager.login_message_category='info'
 from application import routes
-from application.models import Module, Pdf
+from application.models import Module, Pdf, Image, Video
 api = Api(app)
 class AddPdf(Resource):
     def post(self):
@@ -38,4 +38,29 @@ class AddPdf(Resource):
         db.session.commit()
         return {"data":"fine"}
 
+class AddImage(Resource):
+    def post(self):
+        json_data = request.get_json(force=True)
+        module_id = json_data['module_id']
+        url = json_data['url']
+        print(module_id, url)
+        module = Module.query.get(module_id)
+        image = Image(title="New Image", image="-1", module=module, sharable_link=url)
+        db.session.add(image)
+        db.session.commit()
+        return {"data":"fine"}
+
+class AddVideo(Resource):
+    def post(self):
+        json_data = request.get_json(force=True)
+        module_id = json_data['module_id']
+        url = json_data['url']
+        print(module_id, url)
+        module = Module.query.get(module_id)
+        video = Video(title="New Video", video="-1", module=module, sharable_link=url)
+        db.session.add(video)
+        db.session.commit()
+        return {"data":"fine"}
+
 api.add_resource(AddPdf, '/api/pdf')
+api.add_resource(AddImage, '/api/image')
