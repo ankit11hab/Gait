@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% include "components/navbar.html" %}
+{% block content %}
+<style>
+    a {
+        text-decoration: none;
+    }
+</style>
+<div>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        <div class="col">
+            <a href="{{ url_for('new_module') }}">
+                <div class="card h-100">
+                    <div class="card-body d-flex flex-row justify-content-center align-items-center">
+                        <h5 class="card-title" style="font-size: 40px;color: #545454">+</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% for module in current_user.modules %}
+            <div class="col">
+                <div class="card h-100">
+                    <div class="dropdown">
+                        <button style="float:right; background-color: white; border: none; outline:none; margin-top: 3px; margin-bottom: 4px;" type="button" id="dropdownModuleButton-{{module.id}}"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ url_for('static', filename='assets/menu.png') }}" width="17px" />
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownModuleButton-{{module.id}}">
+                            <li><a class="dropdown-item" href="{{ url_for('edit_module', module_id=module.id) }}">Edit</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('delete_module_del', module_id=module.id) }}">Delete</a></li>
+                        </ul>
+                    </div>
+                    <a href="{{ url_for('module_details', module_id=module.id) }}">
+                    <div class="card-body d-flex flex-row justify-content-center align-items-center">
+                        <h5 class="card-title" style="color: #545454; transform: translate(0,-4px);">{{ module.title }}</h5>
+                    </div>
+                </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

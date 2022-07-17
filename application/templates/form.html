@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<div class="main-content">
+    <div class="heading mb-3">
+        {{ legend }}
+    </div>
+    <form method="POST" action="" novalidate  enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        {% for field in form if field.widget.input_type != 'hidden' %}
+        {% if field.type != "SubmitField" and field.type!="BooleanField" %}
+        <div class="mb-3">
+            <label class="form-label">{{ field.label(class="form-label") }}</label>
+            {% if field.errors %}
+            {{ field(class="form-control form-control is-invalid") }}
+            <div class="invalid-feedback">
+                {% for error in field.errors %}
+                <span>{{ error }}</span>
+                {% endfor %}
+            </div>
+            {% else %}
+            {{ field(class="form-control form-control") }}
+            {% endif %}
+        </div>
+        {% endif %}
+        {% if field.type=="BooleanField" %}
+        <div class="mb-3">
+            {{ field(class="form-check-input") }}
+            <label class="form-check-label ms-2" style="transform: translate(0,-0.8px);">{{
+                field.label(class="form-label") }}</label>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {{ form.submit(class="btn btn-primary mt-3") }}
+        {% if type=="crud" %}
+        <a href="{{ url_for('module') }}"><button type="button" class="btn btn-danger mt-3 ms-2">Cancel</button></a>
+        {% endif %}
+        {% if type=="register" %}
+        <div class="form-text mt-4">Already have an account? <a href="{{ url_for('login') }}">Sign In</a></div>
+        {% endif %}
+        {% if type=="login" %}
+        <div class="form-text mt-4">Don't have an account? <a href="{{ url_for('register') }}">Sign Up</a></div>
+        {% endif %}
+
+    </form>
+</div>
+{% endblock content %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% include "components/navbar.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<style>
+    body{
+        display: block;
+        padding: 0;
+    }
+</style>
+<div class="main-content mt-5">
+    <div class="heading mb-3">
+        Summary
+    </div>
+    <form action="">
+        Total Number of lists: {{ no_of_lists }} <br />
+        Total Number of Cards: {{ total_cards }} <br />
+        Number of Completed Cards: {{ total_completed_cards }} <br />
+        Number of Cards crossed Deadline: {{ total_expired_cards }} <br /><br />
+    </form>
+</div>
+{% endblock content %}
